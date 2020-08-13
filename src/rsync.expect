@@ -1,12 +1,10 @@
 #!/usr/bin/expect -f
-# 自动登录输入密码后interact，当前服务器Connection to 114.116.227.233 closed. 可能是spawn进程中断？
-# 自动输入用户名后interact，手动输入密码可正常登录
 
 # -t -t
-# set ip [lindex $argv 0 ]  
-# set password [lindex $argv 1 ]
-# set passwd [lindex $argv 0]
-# set host [lindex $argv 1]
+# set ip [lindex  0 ]  
+# set password [lindex  1 ]
+# set passwd [lindex  0]
+# set host [lindex  1]
 set timeout 20   
 spawn ssh -p 2222 bdyx01@114.116.227.233
 # spawn ssh -p 2222 -o ServerAliveInterval=60 bdyx01@114.116.227.233
@@ -16,8 +14,8 @@ send "Bdyx@2019\r"
 
 # expect ">" 
 # foreach  i  5  {
-#   send "$i"
-#   # send "$i"
+#   send ""
+#   # send ""
 #   send "\r"
 # }
 
@@ -26,9 +24,9 @@ expect "*操作命令:" {send "5"
 
 # expect "*账户:" 
 # foreach  j  root  {
-#   send "$j"
+#   send ""
 #   # puts "\n"
-#   # send "$i"
+#   # send ""
 #   send "\r"
 # }
 
@@ -47,10 +45,10 @@ expect "t" {send "\r"}
 expect "*资源'root'密码:"
 
 foreach  i  XUANWUyy0805  {
-    # send "$i"
-    puts "$i"
-    # send "$i"
-    # send "$i"
+    # send ""
+    # puts ""
+    send ""
+    # send ""
     # send "\r"
 }
 send "\r"
@@ -66,21 +64,3 @@ interact
 # }
 
 
-# expect "验证成功!"
-
-# cd projects/hospital-management/
-
-# interact
-echo done!
-
-
-
-# {
-#   for i in r o o t
-#   do
-#     # echo $i
-#     expect "*账户:" 
-#     send $i
-#   done
-
-# }
