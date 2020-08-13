@@ -4,7 +4,6 @@ import './App.css';
 import areaSource from './areaSource/index.js';
 
 let {provinces, cities, areas, streets} = areaSource
-
 let areaSourceArr = [provinces, cities, areas, streets]
 
 class App extends React.Component{
@@ -14,16 +13,8 @@ class App extends React.Component{
 
     }
   }
-  componentDidMount(){
-  let {provinces, cities, areas, streets} = areaSource
-  // this.areaSourceHandler()
-  // this.gotoHandel()
-  
-  }
 
   /**
- * 
- * 
  * 
  * const AreaData = [
     {
@@ -44,88 +35,34 @@ class App extends React.Component{
             },
 
  */
-/* 添加children, 同时加上value和label属性 */
+
+/* 给对象添加children, 同时加上value和label属性 */
  appendToParent(parent, children){
-   console.log('append parent', parent);
-   console.log('append children', children);
    let res = Object.assign({}, parent, {value: parent.name, label: parent.name})
    children ? res = Object.assign({}, res, {children}) : null
    return res
 }
 
+/* 处理每层数据，返回children数组 */
 gotoHandel( parentItem, index=0){
   let children = []
   let self = this
-  if(index == 4){
-    console.log('resssss', children);
-    return children
-  }
+
   for(let i of areaSourceArr[index]){
-    (function(i){
-      // console.log('areaSourceArr[index] ', areaSourceArr[index]);
-      // console.log('parentItem ', parentItem);
-
-      if((parentItem && i.parent_code === parentItem.code) || !parentItem){
-          /* 最终 街道*/
-          if(index == 3){
-
-            // i = self.appendToParent(i)
-            i = self.appendToParent(i)
-            children.push(i)
-            console.log('children 333', children);
-
-            // self.appendToParent(parentItem, i)
-
-          }else{
-            i = self.appendToParent(i, self.gotoHandel(i, +index+1))
-            children.push(i)
-          }
-      }
-
+    if((parentItem && i.parent_code === parentItem.code) || !parentItem){
+        /* 最终层 街道*/
+        if(index == 3){
+          i = self.appendToParent(i)
+          children.push(i)
+        }else{ /* 修改每一个对象，然后push到当前层的children数组 */
+          i = self.appendToParent(i, self.gotoHandel(i, index+1))
+          children.push(i)
+        }
     }
-    )(i)
   }
-  // if(){
-  //   i = self.appendToParent(i, self.gotoHandel(i, index+1))
-  //   children.push(i)
-  // }
-
   return children
 }
 
-/* 有限方法 */
-
-callback(q, j, children){
-  let self = this
-  if(q.parent_code === j.code){
-    q = self.appendToParent(q)
-    children.push(q)
-  }
-}
-
-// callback(item, parentItem, children, callback){
-//     (function(item){
-//       console.log('children 123', children);
-      
-//       if(item.parent_code === parentItem.code){
-//           for(let q of streets){
-//             /* 最终 街道*/
-//             if(item.code.length == 9){
-//               q = self.appendToParent(q)
-//               children.push(q)
-//             }else{
-//               q = self.appendToParent(q, this.callback(q))
-//               children.push(q)
-//             }
-//           }
-//         item = self.appendToParent(item, children2)
-//         children.push(item)
-
-//       }
-
-//     }
-//     )(item)
-// }
 
  areaSourceHandler(){
   let {provinces, cities, areas, streets} = areaSource
@@ -180,16 +117,12 @@ callback(q, j, children){
       console.log('resultData res', resultData);
     }
   }
-  // provinces.map(province => {
-    
-    
-  // })
 }
 
 render() {
 let res =  this.gotoHandel()
 console.log('res', res);
-
+// this.areaSourceHandler()
 
   return (
     <div className="App">
