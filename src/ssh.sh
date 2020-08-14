@@ -44,18 +44,27 @@ expect "t" {send "\r"}
 # expect "root"
 # send "\r"
 # set timeout 30
-expect "*资源'root'密码:"
 
-foreach  i  XUANWUyy0805  {
-    # send "$i"
-    puts "$i"
-    # send "$i"
-    # send "$i"
-    # send "\r"
-}
-send "\r"
+expect "*资源'root'密码:"
+# -----跑一半，最后密码和后续自己敲
+# XUANWUyy0805
+# cd projects/hospital-management/
+# git pull origin xuanwu_dev
+# npm run build && pm2 restart 10
+
+
+# ----------- begin 完整打开：但链接close; （此处密码无法黏贴，有关？）
+# foreach  i  XUANWUyy0805  {
+#     # send "$i"
+#     puts "$i"
+#     # send "$i"
+#     # send "\r"
+# }
+# send "\r"
+
+# ------------ end
 # expect eof
-# ls
+
 # cd projects/hospital-management/
 interact
 # expect "XUANWUyy0805" 

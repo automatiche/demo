@@ -38,7 +38,7 @@ class App extends React.Component{
 
 /* 给对象添加children, 同时加上value和label属性 */
  appendToParent(parent, children){
-   let res = Object.assign({}, parent, {value: parent.name, label: parent.name})
+   let res = Object.assign({}, {value: parent.name, label: parent.name})
    children ? res = Object.assign({}, res, {children}) : null
    return res
 }
