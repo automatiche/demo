@@ -1,93 +1,139 @@
-import React, { Component } from 'react';
-import {ToyReact, Component} from "./ToyReact.js"
+// apply
 
-import {
-    StyleSheet,
-    View,
-    Text,
-    ListView,
-    TouchableOpacity,
-} from 'react-native';
-
-const defaultSource = new ListView.DataSource({rowHasChanged: (row1, row2) => row1 !== row2});
-const testData = [{uername:'谢广坤',useid:'w1258536653',remark:'这是一条备注信息'},
-    {uername:'王小绿',useid:'1258012580',remark:''},
-    {uername:'肖宏',useid:'3215532155',remark:'宵小消失'},
-    {uername:'李逸',useid:'1008610086',remark:'木子李'}];
-
-export default class Test extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            dataSource: defaultSource,
-        };
-        this.listData = [];
-    }
-
-    componentDidMount() {
-        this.listData = JSON.parse(JSON.stringify(testData));
-        this.setState({
-            dataSource: defaultSource.cloneWithRows(testData),
-        });
-    }
-
-    updateItem = (index) => {
-        if (this.listData[index].username == '李明') {
-            return;
-        }
-        this.listData[index].username = '李明';
-        this.setState({
-            dataSource: defaultSource.cloneWithRows(this.listData),
-        });
-    } 
-
-    renderRow = (rowData,i,j) => {
-        console.log('renderRow',rowData.uername);
-        return (
-            <SubItem rowData={rowData} updateItem={this.updateItem} index={j}/>
-        )
-    }
-
-    render() {
-        return (
-            <View style={{flex:1,backgroundColor:"#faf7f7"}}>
-                <ListView
-                    dataSource={this.state.dataSource}
-                    renderRow={this.renderRow}/>
-            </View>
-        )
-    }
+Function.prototype.myApply = function(thisArg, params){
+  var thisArgType= typeof thisArg
+  if(thisArgType === 'number'){
+    thisArg = new Number(thisArg)
+  }
+  else if(thisArgType === 'string'){
+    thisArg = new String(thisArg)
+  }
+  else if(thisArgType === 'boolean'){
+    thisArg = new Boolean(thisArg)
+  }
+  // thisArg 主语 传入的
+  let thisTis = this
+  let paramsInVoke = Array.isArray(params) ? params: []
+  if(thisArg === null || thisArg === undefined){
+    return thisTis(...paramsInVoke)
+  }
+  let uniquePropName = new Symbol(thisArg)
+  return thisArg[thisTis](...paramsInVoke)
 }
 
-const SubItem = ({rowData,index,updateItem,}) => {
-    console.log('SubItem.render',rowData.uername);
-    return (
-        <View style={styles.itemStyle}>
-            <TouchableOpacity onPress={()=>updateItem(index)} style={styles.updataBtn}>
-                <Text style={styles.baseText}>{rowData.uername||''}</Text>
-                <Text style={{fontSize:12,color:'#fff',paddingLeft:20}}>{'点我修改'}</Text>
-            </TouchableOpacity>
-            <Text style={styles.baseText}>{rowData.useid||''}</Text>
-            <Text style={styles.baseText}>{rowData.remark||'暂无备注'}</Text>
-        </View>
-    );
+Function.prototype.myBind = function(){
+  var boundTargetFunc = this
+  if(typeof boundTargetFunc !== 'function'){
+    return new Error('绑定的目标必须是函数')
+  }
+  var boundThis = arguments[0]
+  var boundParams = [].slice.call(arguments, 1)
+  function fBound(){
+    var restParams = [].slice.call(arguments)
+    var allParams = boundParams.concat(restParams)
+    return boundTargetFunc.apply(this instanceof fBound ? this : boundThis, allParams)
+  }
+  fBound.prototype = Object.create(boundTargetFunc.prototype || Function.prototype)
+  return fBound
 }
 
-const styles = StyleSheet.create({
-    itemStyle: {
-        paddingHorizontal: 10,
-        paddingVertical: 15,
-        backgroundColor: '#fff',
-        marginBottom: 5,
-    },
-    baseText: {
-        fontSize: 14,
-        color: '#000',
-    },
-    updataBtn: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        padding: 5,
-        backgroundColor: '#58A0FF',
-    }
-});
+// qiu最大值
+function maxBy(arr, callback){
+  let values = []
+  if(typeof callback === 'string'){
+    values = arr.map(item=>item.callback)
+  }else if(typeof callback === 'function'){
+    values = arr.map((item, index)=>{
+      return callback(item, index, arr)
+    })
+
+  }
+  let maxOne = Math.max(...values)
+  let maxIndex = values.findIndex(item=>item=== maxOne)
+  return arr[maxIndex]
+}
+const list = [
+  {name: '小明', priority: 'middle'},
+  {name: '小红', priority: 'low'},
+  {name: '小李', priority: 'high'}
+]
+
+let callback = function(item){
+  let key = item.priority === 'low' ? 1:item.priority === 'middle' ? 2:item.priority === 'high' ? 3:0
+  return key
+}
+maxBy(list, callback)
+
+
+
+// 参数定长的curry @
+function curry(fn){
+  const argLen = fn.length
+  const presetArgs = [].slice.call(arguments, 1)
+
+    return function(){
+      const restParams = [].slice.call(arguments)
+      const allParams = [...presetArgs, ...restParams]
+      if(allParams.length >= argLen){
+        return fn.apply(this, allParams)
+      }
+      else{
+        return curry.call(null, fn, ...allParams)
+      }
+  }
+}
+
+
+// 参数不定长的curry @@
+function curry(fn){
+  const presetArgs = [].slice.call(arguments, 1)
+  function curried (){
+    let restParams = [].slice.call(arguments)
+    let allParams = [...presetArgs, ...restParams]
+    return curry.call(null, fn, ...allParams)
+  }
+  curried.toString = function() {
+    return fn.apply(null, presetArgs)
+  }
+  return curried
+}
+
+let arr = [[0, 1], [2, 3], [4,[5,6,7]]]
+const newArr = function(arr){
+   return arr.reduce((pre,cur)=>pre.concat(Array.isArray(cur)?newArr(cur):cur),[])
+}
+console.log(newArr(arr)); //[0, 1, 2, 3, 4, 5, 6, 7]
+
+
+
+ arr = [[0, 1], [2, 3], [4,[5,6,7]]]
+ newArr = function(arr){
+   return arr.reduce((pre, cur)=>pre.concat(Array.isArray(cur)? newArr(cur): cur), [])
+}
+console.log(newArr(arr)); //[0, 1, 2, 3, 4, 5, 6, 7]
+
+
+var result = [
+  {
+      subject: 'math',
+      score: 10
+  },
+  {
+      subject: 'chinese',
+      score: 20
+  },
+  {
+      subject: 'english',
+      score: 30
+  }
+];
+
+var sum = result.reduce(function(prev, cur) {
+  return prev + cur.score
+}, 0);
+// console.log(sum) //60
+var sum = 0
+result.map(item=>{
+  sum += item.score
+})
+console.log(sum)
