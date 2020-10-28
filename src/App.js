@@ -5,6 +5,11 @@ import MyComponentRef from './refs'
 // import {CommentList, BlogPost} from './hoc'
 import {CommentList, BlogPost, CommentListWithSubscription, BlogPostWithSubscription} from './hoc_2'
 import {BlueDatePicker, YourComponent} from './practice'
+import Example from './hooks'
+import Parent from './hooks-video/ref-demo.js'
+import Hooks from './hooks-video/hooks'
+import EffectTimeDemo from './hooks-video/effect-time-demo'
+import Counter from './hooks-video/optimization'
 
 // import logo from './logo.svg';
 import './App.css';
@@ -89,8 +94,14 @@ render() {
 
         {/* <CommentList onSelected={this.onSelected}></CommentList>
         <BlogPost id={this.state.selectedId}></BlogPost> */}
-        <CommentListWithSubscription onSelected={this.onSelected}></CommentListWithSubscription>
+
+        {/* <CommentListWithSubscription onSelected={this.onSelected}></CommentListWithSubscription>
         <BlogPostWithSubscription id={this.state.selectedId}></BlogPostWithSubscription>
+        <Example></Example> */}
+        <Parent></Parent>
+        <Hooks></Hooks>
+        <EffectTimeDemo></EffectTimeDemo>
+        <Counter></Counter>
       </header>
     </div>
   );
