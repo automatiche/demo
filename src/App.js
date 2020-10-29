@@ -10,6 +10,7 @@ import Parent from './hooks-video/ref-demo.js'
 import Hooks from './hooks-video/hooks'
 import EffectTimeDemo from './hooks-video/effect-time-demo'
 import Counter from './hooks-video/optimization'
+import ClosureDemo from './hooks-video/closure'
 
 // import logo from './logo.svg';
 import './App.css';
@@ -102,6 +103,7 @@ render() {
         {/* <Hooks></Hooks> */}
         <EffectTimeDemo></EffectTimeDemo>
         <Counter></Counter>
+        <ClosureDemo></ClosureDemo>
       </header>
     </div>
   );
