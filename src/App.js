@@ -99,7 +99,7 @@ render() {
         <BlogPostWithSubscription id={this.state.selectedId}></BlogPostWithSubscription>
         <Example></Example> */}
         <Parent></Parent>
-        <Hooks></Hooks>
+        {/* <Hooks></Hooks> */}
         <EffectTimeDemo></EffectTimeDemo>
         <Counter></Counter>
       </header>

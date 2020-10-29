@@ -4,14 +4,14 @@ const colors = ['red', 'black', 'yellow']
 export default function EffectTimeDemo(){
   const [num, setNum] = useState(0)
 
-  useEffect(()=>{
-    setInterval(()=>{
-      setNum(c => c === 2?0: c+1)
-    }, 1000)
-  }, [])
+  // useEffect(()=>{
+  //   setInterval(()=>{
+  //     setNum(c => c === 2?0: c+1)
+  //   }, 1000)
+  // }, [])
 
   useEffect(()=>{
-    alert(num)
+    // alert(num)
   })
 
   // 和 componentDidMount 类似
